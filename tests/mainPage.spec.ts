@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page, Locator } from '@playwright/test';
 
-const elements = [
+const elements: { locator: (page: Page) => Locator; name: string}[] = [
   {
     locator: (page) => page.getByRole('link', { name: 'Playwright logo Playwright' }),
     name: 'Playwright logo'
@@ -46,11 +46,11 @@ test.describe('Main page tests', () => {
   });
 
   test('Navigation elements are visible header', async ({ page }) => {
-    elements.forEach(({ locator, name }) => {
+    for (const { locator, name } of elements) {
       test.step(`Check visibility of ${name}`, async () => {
         await expect.soft(locator(page)).toBeVisible();
       });
-    });
+    }
   });
 
   test('Navigation elements names test', async ({ page }) => {
