@@ -74,12 +74,26 @@ const elements: Elements[] = [
     name: 'Discord server',
     attribute: {
       type: 'href',
-    href: 'https://aka.ms/playwright/discord'
+      href: 'https://aka.ms/playwright/discord'
     }
   },
   {
     locator: (page) => page.getByRole('button', { name: 'Switch between dark and light' }),
     name: 'Dark mode switch'
+  },
+  {
+    locator: (page) => page.getByRole('heading', { name: 'Playwright enables reliable' }),
+    name: 'Title',
+    text: 'Playwright enables reliable web automation for testing, scripting, and AI agents.'
+  },
+  {
+    locator: (page) => page.getByRole('link', { name: 'Get started' }),
+    name: 'Get started button',
+    attribute: {
+      type: 'href',
+      href: '/docs/intro'
+    },
+    text: 'Get started'
   },
 ];
 
@@ -120,16 +134,5 @@ test.describe('Main page tests', () => {
     await expect.soft(page.locator('html')).toHaveAttribute('data-theme-choice', 'light');
     await page.getByRole('button', { name: /Switch between dark and light mode/ }).click();
     await expect.soft(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-  });
-
-  test('Page title check', async ({ page }) => {
-    await expect.soft(page.getByRole('heading', { name: 'Playwright enables reliable' })).toBeVisible();
-    await expect.soft(page.getByRole('heading', { name: 'Playwright enables reliable' })).toContainText('Playwright enables reliable web automation for testing, scripting, and AI agents.');
-  });
-
-  test('Get started button check', async ({ page }) => {
-    await expect.soft(page.getByRole('link', { name: 'Get started' })).toBeVisible();
-    await expect.soft(page.getByRole('link', { name: 'Get started' })).toContainText('Get started');
-    await expect.soft(page.getByRole('link', {name: 'Get started'})).toHaveAttribute('href', '/docs/intro');
   });
 });
