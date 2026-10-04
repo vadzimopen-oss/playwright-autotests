@@ -1,35 +1,60 @@
 import { test, expect, Page, Locator } from '@playwright/test';
 
-const elements: { locator: (page: Page) => Locator; name: string; text?: string; href?: string}[] = [
+interface Elements {
+  locator: (page: Page) => Locator;
+  name: string;
+  text?: string;
+  attribute?: {
+    type: string;
+    href: string;
+  };
+}
+
+const elements: Elements[] = [
   {
     locator: (page) => page.getByRole('link', { name: 'Playwright logo Playwright' }),
     name: 'Playwright logo',
     text: 'Playwright',
-    href: '/'
+    attribute: {
+      type: 'href',
+      href: '/'
+    }
   },
   {
     locator: (page) => page.getByRole('link', { name: 'Docs' }),
     name: 'Docs',
     text: 'Docs',
-    href: '/docs/intro'
+    attribute: {
+      type: 'href',
+      href: '/docs/intro'
+    }
   },
   {
     locator: (page) => page.getByRole('link', { name: 'MCP', exact: true }),
     name: 'MCP',
     text: 'MCP',
-    href: '/mcp/introduction'
+    attribute: {
+      type: 'href',
+      href: '/mcp/introduction'
+    }
   },
   {
     locator: (page) => page.getByRole('link', { name: 'CLI', exact: true }),
     name: 'CLI',
     text: 'CLI',
-    href: '/agent-cli/introduction'
+    attribute: {
+      type: 'href',
+      href: '/agent-cli/introduction'
+    }
   },
   {
     locator: (page) => page.getByRole('link', { name: 'API' }),
     name: 'API',
     text: 'API',
-    href: '/docs/api/class-playwright'
+    attribute: {
+      type: 'href',
+      href: '/docs/api/class-playwright'
+    }
   },
   {
     locator: (page) => page.getByRole('button', { name: 'Node.js' }),
@@ -39,12 +64,18 @@ const elements: { locator: (page: Page) => Locator; name: string; text?: string;
   {
     locator: (page) => page.getByRole('link', { name: 'GitHub repository' }),
     name: 'GitHub repository',
-    href: 'https://github.com/microsoft/playwright'
+    attribute: {
+      type: 'href',
+      href: 'https://github.com/microsoft/playwright'
+    }
   },
   {
     locator: (page) => page.getByRole('link', { name: 'Discord server' }),
     name: 'Discord server',
+    attribute: {
+      type: 'href',
     href: 'https://aka.ms/playwright/discord'
+    }
   },
   {
     locator: (page) => page.getByRole('button', { name: 'Switch between dark and light' }),
@@ -76,10 +107,10 @@ test.describe('Main page tests', () => {
   });
 
   test('href attribute check', async ({ page }) => {
-    for (const {locator, name, href} of elements) {
-      if (!href) continue;
+    for (const {locator, name, attribute} of elements) {
+      if (!attribute?.href) continue;
       await test.step(`Check href attribute of ${name}`, async () => {
-        await expect.soft(locator(page)).toHaveAttribute('href', href);
+        await expect.soft(locator(page)).toHaveAttribute(attribute.type, attribute.href);
       })
     }
   });
