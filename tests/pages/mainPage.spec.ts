@@ -103,7 +103,7 @@ const elements: Elements[] = [
 
 test.describe('Main page tests', () => {
   test.beforeEach(async ({ page }) => {
-    //await page.goto('https://playwright.dev/');
+    await page.goto('https://playwright.dev/');
   });
 
   test('Navigation elements are visible header', async ({ page }) => {
