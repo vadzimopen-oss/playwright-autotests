@@ -1,4 +1,5 @@
 import { test, expect, Page, Locator } from '@playwright/test';
+import { MainPage } from '../models/MainPage';
 
 interface Elements {
   locator: (page: Page) => Locator;
@@ -102,15 +103,13 @@ const elements: Elements[] = [
 
 test.describe('Main page tests', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('https://playwright.dev/');
+    //await page.goto('https://playwright.dev/');
   });
 
   test('Navigation elements are visible header', async ({ page }) => {
-    for (const { locator, name } of elements) {
-      test.step(`Check visibility of ${name}`, async () => {
-        await expect.soft(locator(page)).toBeVisible();
-      });
-    }
+    const mainPage = new MainPage(page);
+    await mainPage.openMainPage();
+    await mainPage.checkElementsVisability();
   });
 
   test('Navigation elements names test', async ({ page }) => {
