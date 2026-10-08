@@ -10,6 +10,8 @@ interface Elements {
   };
 }
 
+const lightMods = ['light', 'dark']
+
 const elements: Elements[] = [
   {
     locator: (page) => page.getByRole('link', { name: 'Playwright logo Playwright' }),
@@ -134,5 +136,14 @@ test.describe('Main page tests', () => {
     await expect.soft(page.locator('html')).toHaveAttribute('data-theme-choice', 'light');
     await page.getByRole('button', { name: /Switch between dark and light mode/ }).click();
     await expect.soft(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  });
+
+  lightMods.forEach((value) => {
+    test(`Style check of active ${value} mode main page`, async ({ page }) => {
+      await page.evaluate((value) => {
+        document.querySelector('html')?.setAttribute('data-theme', value);
+      }, value)
+      await expect(page).toHaveScreenshot(`page_with_${value}_mode.png`);
+    }); 
   });
 });
