@@ -110,8 +110,24 @@ export class MainPage {
     async checkElementsVisability() {
         for (const { locator, name } of this.elements) {
             test.step(`Check visibility of ${name}`, async () => {
-            await expect.soft(locator(this.page)).toBeVisible();
+                await expect.soft(locator(this.page)).toBeVisible();
             });
+        }
+    }
+    async checkElementsText() {
+        for (const { locator, name, text} of this.elements) {
+          if (!text) continue;
+            await test.step(`Check test of ${name}`, async () => {
+                await expect.soft(locator(this.page)).toContainText(text);
+            })  
+        }
+    }
+    async checkHrefAttribute() {
+        for (const {locator, name, attribute} of this.elements) {
+            if (!attribute?.href) continue;
+            await test.step(`Check href attribute of ${name}`, async () => {
+                await expect.soft(locator(this.page)).toHaveAttribute(attribute.type, attribute.href);
+            })
         }
     }
 }

@@ -113,21 +113,15 @@ test.describe('Main page tests', () => {
   });
 
   test('Navigation elements names test', async ({ page }) => {
-    for (const {locator, name, text} of elements) {
-      if (!text) continue;
-      await test.step(`Check test of ${name}`, async () => {
-        await expect.soft(locator(page)).toContainText(text);
-      })  
-    }
+    const mainPage = new MainPage(page);
+    await mainPage.openMainPage();
+    await mainPage.checkElementsText();
   });
 
   test('href attribute check', async ({ page }) => {
-    for (const {locator, name, attribute} of elements) {
-      if (!attribute?.href) continue;
-      await test.step(`Check href attribute of ${name}`, async () => {
-        await expect.soft(locator(page)).toHaveAttribute(attribute.type, attribute.href);
-      })
-    }
+    const mainPage = new MainPage(page);
+    await mainPage.openMainPage();
+    await mainPage.checkHrefAttribute();
   });
 
   test('Dark mode switch test', async ({ page }) => {
